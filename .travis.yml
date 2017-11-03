@@ -6,12 +6,12 @@ go:
     - tip
 install:
     - go get -t -v ./...
-    - go get github.com/golang/lint/golint
-    - go get honnef.co/go/tools/cmd/megacheck
 script: go test -v -race ./...
 jobs:
     include:
     - stage: lint
       script: go vet ./...
-      script: golint -set_exit_status
-      script: megacheck ./...
+    - script: golint -set_exit_status
+      install: go get github.com/golang/lint/golint
+    - script: megacheck ./...
+      install: go get honnef.co/go/tools/cmd/megacheck
