@@ -3,8 +3,9 @@ package tuitest
 
 import (
 	"bytes"
-	"github.com/cceckman/tui-go"
 	"image"
+
+	"github.com/marcusolsson/tui-go"
 )
 
 type TestCell struct {

@@ -3,9 +3,9 @@ package tui_test
 import (
 	"testing"
 
-	"github.com/cceckman/tui-go"
-	"github.com/cceckman/tui-go/tuitest"
 	"github.com/kr/pretty"
+	"github.com/marcusolsson/tui-go"
+	"github.com/marcusolsson/tui-go/tuitest"
 )
 
 func TestProgress_Draw(t *testing.T) {

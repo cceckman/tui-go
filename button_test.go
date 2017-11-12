@@ -1,8 +1,8 @@
 package tui_test
 
 import (
-	"github.com/cceckman/tui-go"
-	"github.com/cceckman/tui-go/tuitest"
+	"github.com/marcusolsson/tui-go"
+	"github.com/marcusolsson/tui-go/tuitest"
 	"testing"
 )
 
