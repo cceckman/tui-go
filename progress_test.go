@@ -3,8 +3,9 @@ package tui_test
 import (
 	"testing"
 
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"github.com/kr/pretty"
-	"github.com/marcusolsson/tui-go"
 )
 
 func TestProgress_Draw(t *testing.T) {
@@ -12,7 +13,7 @@ func TestProgress_Draw(t *testing.T) {
 	p.SetSizePolicy(tui.Expanding, tui.Minimum)
 	p.SetCurrent(50)
 
-	surface := newTestSurface(11, 2)
+	surface := tuitest.NewSurface(11, 2)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 	painter.Repaint(p)
 

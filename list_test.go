@@ -3,12 +3,13 @@ package tui_test
 import (
 	"testing"
 
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"github.com/kr/pretty"
-	"github.com/marcusolsson/tui-go"
 )
 
 func TestList_Draw(t *testing.T) {
-	surface := newTestSurface(10, 5)
+	surface := tuitest.NewSurface(10, 5)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 
 	l := tui.NewList()
@@ -29,7 +30,7 @@ bar
 }
 
 func TestList_RemoveItem(t *testing.T) {
-	surface := newTestSurface(5, 3)
+	surface := tuitest.NewSurface(5, 3)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 
 	l := tui.NewList()

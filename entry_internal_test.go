@@ -1,6 +1,6 @@
 package tui
 
-import(
+import (
 	"image"
 	"testing"
 )
@@ -31,4 +31,3 @@ func TestIsTextRemaining(t *testing.T) {
 		})
 	}
 }
-

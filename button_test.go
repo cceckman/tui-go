@@ -1,8 +1,9 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 func TestButton_OnActivated(t *testing.T) {
@@ -36,7 +37,7 @@ func TestButton_OnActivated(t *testing.T) {
 }
 
 func TestButton_Draw(t *testing.T) {
-	surface := newTestSurface(10, 5)
+	surface := tuitest.NewSurface(10, 5)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 
 	btn := tui.NewButton("test")

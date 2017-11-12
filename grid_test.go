@@ -1,9 +1,10 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"image"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 var drawGridTests = []struct {
@@ -205,7 +206,7 @@ var drawGridTests = []struct {
 func TestGrid_Draw(t *testing.T) {
 	for _, tt := range drawGridTests {
 		t.Run(tt.test, func(t *testing.T) {
-			surface := newTestSurface(tt.size.X, tt.size.Y)
+			surface := tuitest.NewSurface(tt.size.X, tt.size.Y)
 			painter := tui.NewPainter(surface, tui.NewTheme())
 			painter.Repaint(tt.setup())
 

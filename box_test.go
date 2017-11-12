@@ -1,9 +1,10 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"image"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 var drawBoxTests = []struct {
@@ -291,11 +292,11 @@ func TestBox_Draw(t *testing.T) {
 	for _, tt := range drawBoxTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 
 			painter := tui.NewPainter(surface, tui.NewTheme())
@@ -399,7 +400,7 @@ func TestBox_Insert(t *testing.T) {
 	for _, tt := range insertWidgetTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			surface := newTestSurface(20, 10)
+			surface := tuitest.NewSurface(20, 10)
 			painter := tui.NewPainter(surface, tui.NewTheme())
 
 			label0 := tui.NewLabel("Test 0")
@@ -435,7 +436,7 @@ func TestBox_Prepend(t *testing.T) {
 │..................│
 └──────────────────┘
 `
-	surface := newTestSurface(20, 10)
+	surface := tuitest.NewSurface(20, 10)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 
 	label0 := tui.NewLabel("Test 0")
@@ -465,7 +466,7 @@ func TestBox_Remove(t *testing.T) {
 │..................│
 └──────────────────┘
 `
-	surface := newTestSurface(20, 6)
+	surface := tuitest.NewSurface(20, 6)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 
 	label0 := tui.NewLabel("Test 0")

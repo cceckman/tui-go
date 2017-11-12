@@ -1,9 +1,10 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"image"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 var drawScrollAreaTests = []struct {
@@ -100,17 +101,17 @@ func TestScrollArea_Draw(t *testing.T) {
 	for _, tt := range drawScrollAreaTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 			painter := tui.NewPainter(surface, tui.NewTheme())
 
 			a := tt.setup()
 
-			a.Resize(surface.size)
+			a.Resize(surface.Size())
 			a.Draw(painter)
 
 			if surface.String() != tt.want {
@@ -210,11 +211,11 @@ func TestNestedScrollArea_Draw(t *testing.T) {
 	for _, tt := range drawNestedScrollAreaTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 
 			painter := tui.NewPainter(surface, tui.NewTheme())

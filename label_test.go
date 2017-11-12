@@ -1,9 +1,10 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"image"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 var labelTests = []struct {
@@ -95,7 +96,7 @@ wrap......
 
 func TestLabel_Draw(t *testing.T) {
 	for _, tt := range drawLabelTests {
-		surface := newTestSurface(10, 5)
+		surface := tuitest.NewSurface(10, 5)
 
 		painter := tui.NewPainter(surface, tui.NewTheme())
 		painter.Repaint(tt.setup())

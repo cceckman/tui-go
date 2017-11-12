@@ -1,9 +1,10 @@
 package tui_test
 
 import (
+	"github.com/cceckman/tui-go"
+	"github.com/cceckman/tui-go/tuitest"
 	"image"
 	"testing"
-	"github.com/marcusolsson/tui-go"
 )
 
 var drawEntryTests = []struct {
@@ -71,11 +72,11 @@ func TestEntry_Draw(t *testing.T) {
 	for _, tt := range drawEntryTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 
 			painter := tui.NewPainter(surface, tui.NewTheme())
@@ -311,7 +312,7 @@ func TestEntry_Layout(t *testing.T) {
 	for _, tt := range layoutEntryTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			surface := newTestSurface(20, 5)
+			surface := tuitest.NewSurface(20, 5)
 			painter := tui.NewPainter(surface, tui.NewTheme())
 			painter.Repaint(tt.setup())
 
@@ -327,7 +328,7 @@ func TestEntry_OnEvent(t *testing.T) {
 	e.SetText("Lorem ipsum")
 	e.SetFocused(true)
 
-	surface := newTestSurface(4, 1)
+	surface := tuitest.NewSurface(4, 1)
 	painter := tui.NewPainter(surface, tui.NewTheme())
 	painter.Repaint(e)
 
@@ -389,7 +390,7 @@ func TestEntry_MoveToStartAndEnd(t *testing.T) {
 		e.SetFocused(true)
 		e.Offset = 6
 
-		surface := newTestSurface(5, 1)
+		surface := tuitest.NewSurface(5, 1)
 		painter := tui.NewPainter(surface, tui.NewTheme())
 
 		t.Run("When cursor is moved to the start", func(t *testing.T) {
@@ -427,7 +428,7 @@ func TestEntry_OnKeyBackspaceEvent(t *testing.T) {
 		e.SetFocused(true)
 		e.Offset = 6
 
-		surface := newTestSurface(5, 1)
+		surface := tuitest.NewSurface(5, 1)
 		painter := tui.NewPainter(surface, tui.NewTheme())
 
 		t.Run("When cursor is moved to the middle", func(t *testing.T) {
@@ -516,5 +517,3 @@ func repeatKeyEvent(e *tui.Entry, ev tui.KeyEvent, n int) {
 		e.OnKeyEvent(ev)
 	}
 }
-
-
