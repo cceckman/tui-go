@@ -1,6 +1,8 @@
-package tui
+package tui_test
 
 import (
+	"github.com/marcusolsson/tui-go"
+	"github.com/marcusolsson/tui-go/tuitest"
 	"image"
 	"testing"
 )
@@ -8,19 +10,19 @@ import (
 var drawScrollAreaTests = []struct {
 	test  string
 	size  image.Point
-	setup func() *ScrollArea
+	setup func() *tui.ScrollArea
 	want  string
 }{
 	{
 		test: "Empty scroll area",
 		size: image.Point{10, 3},
-		setup: func() *ScrollArea {
-			b := NewVBox(
-				NewLabel("foo"),
-				NewLabel("bar"),
-				NewLabel("test"),
+		setup: func() *tui.ScrollArea {
+			b := tui.NewVBox(
+				tui.NewLabel("foo"),
+				tui.NewLabel("bar"),
+				tui.NewLabel("test"),
 			)
-			a := NewScrollArea(b)
+			a := tui.NewScrollArea(b)
 			return a
 		},
 		want: `
@@ -32,13 +34,13 @@ test......
 	{
 		test: "Vertical scroll top",
 		size: image.Point{10, 2},
-		setup: func() *ScrollArea {
-			b := NewVBox(
-				NewLabel("foo"),
-				NewLabel("bar"),
-				NewLabel("test"),
+		setup: func() *tui.ScrollArea {
+			b := tui.NewVBox(
+				tui.NewLabel("foo"),
+				tui.NewLabel("bar"),
+				tui.NewLabel("test"),
 			)
-			a := NewScrollArea(b)
+			a := tui.NewScrollArea(b)
 			return a
 		},
 		want: `
@@ -49,13 +51,13 @@ bar.......
 	{
 		test: "Vertical scroll bottom",
 		size: image.Point{10, 2},
-		setup: func() *ScrollArea {
-			b := NewVBox(
-				NewLabel("foo"),
-				NewLabel("bar"),
-				NewLabel("test"),
+		setup: func() *tui.ScrollArea {
+			b := tui.NewVBox(
+				tui.NewLabel("foo"),
+				tui.NewLabel("bar"),
+				tui.NewLabel("test"),
 			)
-			a := NewScrollArea(b)
+			a := tui.NewScrollArea(b)
 			a.Scroll(0, 1)
 			return a
 		},
@@ -67,11 +69,11 @@ test......
 	{
 		test: "Horizontal scroll left",
 		size: image.Point{10, 1},
-		setup: func() *ScrollArea {
-			b := NewVBox(
-				NewLabel("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+		setup: func() *tui.ScrollArea {
+			b := tui.NewVBox(
+				tui.NewLabel("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 			)
-			a := NewScrollArea(b)
+			a := tui.NewScrollArea(b)
 			return a
 		},
 		want: `
@@ -81,11 +83,11 @@ Lorem ipsu
 	{
 		test: "Horizontal scroll right",
 		size: image.Point{10, 1},
-		setup: func() *ScrollArea {
-			b := NewVBox(
-				NewLabel("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+		setup: func() *tui.ScrollArea {
+			b := tui.NewVBox(
+				tui.NewLabel("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 			)
-			a := NewScrollArea(b)
+			a := tui.NewScrollArea(b)
 			a.Scroll(46, 0)
 			return a
 		},
@@ -99,17 +101,17 @@ func TestScrollArea_Draw(t *testing.T) {
 	for _, tt := range drawScrollAreaTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
-			painter := NewPainter(surface, NewTheme())
+			painter := tui.NewPainter(surface, tui.NewTheme())
 
 			a := tt.setup()
 
-			a.Resize(surface.size)
+			a.Resize(surface.Size())
 			a.Draw(painter)
 
 			if surface.String() != tt.want {
@@ -122,32 +124,32 @@ func TestScrollArea_Draw(t *testing.T) {
 var drawNestedScrollAreaTests = []struct {
 	test  string
 	size  image.Point
-	setup func() *Box
+	setup func() *tui.Box
 	want  string
 }{
 	{
 		test: "Nested vertical scroll",
 		size: image.Point{11, 12},
-		setup: func() *Box {
-			l := NewList()
+		setup: func() *tui.Box {
+			l := tui.NewList()
 			l.AddItems("foo", "bar", "test")
 
-			b1 := NewVBox(l)
+			b1 := tui.NewVBox(l)
 			b1.SetBorder(true)
 
-			nested := NewVBox(NewLabel("foo"))
+			nested := tui.NewVBox(tui.NewLabel("foo"))
 			nested.SetBorder(true)
 
-			nested2 := NewVBox(nested)
+			nested2 := tui.NewVBox(nested)
 			nested2.SetBorder(true)
 
-			s := NewScrollArea(nested2)
+			s := tui.NewScrollArea(nested2)
 			s.Scroll(0, 4)
 
-			b2 := NewVBox(s)
+			b2 := tui.NewVBox(s)
 			b2.SetBorder(true)
 
-			b3 := NewVBox(b1, b2)
+			b3 := tui.NewVBox(b1, b2)
 			b3.SetBorder(true)
 
 			return b3
@@ -170,23 +172,23 @@ var drawNestedScrollAreaTests = []struct {
 	{
 		test: "Nested horizontal scroll",
 		size: image.Point{20, 9},
-		setup: func() *Box {
-			nested := NewVBox(NewLabel("foo"))
+		setup: func() *tui.Box {
+			nested := tui.NewVBox(tui.NewLabel("foo"))
 			nested.SetBorder(true)
 
-			nested2 := NewVBox(nested)
+			nested2 := tui.NewVBox(nested)
 			nested2.SetBorder(true)
 
-			s := NewScrollArea(nested2)
+			s := tui.NewScrollArea(nested2)
 			s.Scroll(-5, 0)
 
-			b1 := NewVBox(s)
+			b1 := tui.NewVBox(s)
 			b1.SetBorder(true)
 
-			b2 := NewVBox(NewLabel("1234567"))
+			b2 := tui.NewVBox(tui.NewLabel("1234567"))
 			b2.SetBorder(true)
 
-			b3 := NewHBox(b1, b2)
+			b3 := tui.NewHBox(b1, b2)
 			b3.SetBorder(true)
 
 			return b3
@@ -209,14 +211,14 @@ func TestNestedScrollArea_Draw(t *testing.T) {
 	for _, tt := range drawNestedScrollAreaTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 
-			painter := NewPainter(surface, NewTheme())
+			painter := tui.NewPainter(surface, tui.NewTheme())
 			painter.Repaint(tt.setup())
 
 			if surface.String() != tt.want {

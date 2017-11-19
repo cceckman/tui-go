@@ -1,36 +1,38 @@
-package tui
+package tui_test
 
 import (
+	"github.com/marcusolsson/tui-go"
+	"github.com/marcusolsson/tui-go/tuitest"
 	"image"
 	"testing"
 )
 
 var labelTests = []struct {
 	test     string
-	setup    func() *Label
+	setup    func() *tui.Label
 	size     image.Point
 	sizeHint image.Point
 }{
 	{
 		test: "Empty",
-		setup: func() *Label {
-			return NewLabel("")
+		setup: func() *tui.Label {
+			return tui.NewLabel("")
 		},
 		size:     image.Point{100, 100},
 		sizeHint: image.Point{0, 1},
 	},
 	{
 		test: "Single word",
-		setup: func() *Label {
-			return NewLabel("test")
+		setup: func() *tui.Label {
+			return tui.NewLabel("test")
 		},
 		size:     image.Point{100, 100},
 		sizeHint: image.Point{4, 1},
 	},
 	{
 		test: "Wide word",
-		setup: func() *Label {
-			return NewLabel("あäa")
+		setup: func() *tui.Label {
+			return tui.NewLabel("あäa")
 		},
 		size:     image.Point{100, 100},
 		sizeHint: image.Point{4, 1},
@@ -58,13 +60,13 @@ func TestLabel_Size(t *testing.T) {
 
 var drawLabelTests = []struct {
 	test  string
-	setup func() *Label
+	setup func() *tui.Label
 	want  string
 }{
 	{
 		test: "Simple label",
-		setup: func() *Label {
-			return NewLabel("test")
+		setup: func() *tui.Label {
+			return tui.NewLabel("test")
 		},
 		want: `
 test......
@@ -76,10 +78,10 @@ test......
 	},
 	{
 		test: "Word wrap",
-		setup: func() *Label {
-			l := NewLabel("this will wrap")
+		setup: func() *tui.Label {
+			l := tui.NewLabel("this will wrap")
 			l.SetWordWrap(true)
-			l.SetSizePolicy(Expanding, Expanding)
+			l.SetSizePolicy(tui.Expanding, tui.Expanding)
 			return l
 		},
 		want: `
@@ -94,9 +96,9 @@ wrap......
 
 func TestLabel_Draw(t *testing.T) {
 	for _, tt := range drawLabelTests {
-		surface := newTestSurface(10, 5)
+		surface := tuitest.NewSurface(10, 5)
 
-		painter := NewPainter(surface, NewTheme())
+		painter := tui.NewPainter(surface, tui.NewTheme())
 		painter.Repaint(tt.setup())
 
 		if surface.String() != tt.want {

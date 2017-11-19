@@ -1,6 +1,8 @@
-package tui
+package tui_test
 
 import (
+	"github.com/marcusolsson/tui-go"
+	"github.com/marcusolsson/tui-go/tuitest"
 	"image"
 	"testing"
 )
@@ -8,23 +10,23 @@ import (
 var drawTableTests = []struct {
 	test  string
 	size  image.Point
-	setup func() *Box
+	setup func() *tui.Box
 	want  string
 }{
 	{
 		test: "Long labels are masked (#31)",
 		size: image.Point{32, 10},
-		setup: func() *Box {
-			first := NewTable(0, 0)
-			first.AppendRow(NewLabel("ABC123"), NewLabel("test"))
-			first.AppendRow(NewLabel("DEF456"), NewLabel("testing a longer text"))
-			first.AppendRow(NewLabel("GHI789"), NewLabel("foo"))
+		setup: func() *tui.Box {
+			first := tui.NewTable(0, 0)
+			first.AppendRow(tui.NewLabel("ABC123"), tui.NewLabel("test"))
+			first.AppendRow(tui.NewLabel("DEF456"), tui.NewLabel("testing a longer text"))
+			first.AppendRow(tui.NewLabel("GHI789"), tui.NewLabel("foo"))
 			first.SetBorder(true)
 
-			second := NewVBox(NewLabel("test"))
+			second := tui.NewVBox(tui.NewLabel("test"))
 			second.SetBorder(true)
 
-			third := NewHBox(first, second)
+			third := tui.NewHBox(first, second)
 			third.SetBorder(true)
 
 			return third
@@ -45,17 +47,17 @@ var drawTableTests = []struct {
 	{
 		test: "Remove a row from table",
 		size: image.Point{20, 10},
-		setup: func() *Box {
-			table := NewTable(0, 0)
-			table.AppendRow(NewLabel("A"), NewLabel("apple"))
-			table.AppendRow(NewLabel("B"), NewLabel("box"))
-			table.AppendRow(NewLabel("C"), NewLabel("cat"))
-			table.AppendRow(NewLabel("D"), NewLabel("dog"))
+		setup: func() *tui.Box {
+			table := tui.NewTable(0, 0)
+			table.AppendRow(tui.NewLabel("A"), tui.NewLabel("apple"))
+			table.AppendRow(tui.NewLabel("B"), tui.NewLabel("box"))
+			table.AppendRow(tui.NewLabel("C"), tui.NewLabel("cat"))
+			table.AppendRow(tui.NewLabel("D"), tui.NewLabel("dog"))
 			table.SetBorder(true)
 
 			table.RemoveRow(1)
 
-			box := NewHBox(table)
+			box := tui.NewHBox(table)
 			box.SetBorder(true)
 
 			return box
@@ -76,17 +78,17 @@ var drawTableTests = []struct {
 	{
 		test: "Remove all rows from table",
 		size: image.Point{20, 10},
-		setup: func() *Box {
-			table := NewTable(0, 0)
-			table.AppendRow(NewLabel("A"), NewLabel("apple"))
-			table.AppendRow(NewLabel("B"), NewLabel("box"))
-			table.AppendRow(NewLabel("C"), NewLabel("cat"))
-			table.AppendRow(NewLabel("D"), NewLabel("dog"))
+		setup: func() *tui.Box {
+			table := tui.NewTable(0, 0)
+			table.AppendRow(tui.NewLabel("A"), tui.NewLabel("apple"))
+			table.AppendRow(tui.NewLabel("B"), tui.NewLabel("box"))
+			table.AppendRow(tui.NewLabel("C"), tui.NewLabel("cat"))
+			table.AppendRow(tui.NewLabel("D"), tui.NewLabel("dog"))
 			table.SetBorder(true)
 
 			table.RemoveRows()
 
-			box := NewHBox(table)
+			box := tui.NewHBox(table)
 			box.SetBorder(true)
 
 			return box
@@ -110,14 +112,14 @@ func TestTable_Draw(t *testing.T) {
 	for _, tt := range drawTableTests {
 		tt := tt
 		t.Run(tt.test, func(t *testing.T) {
-			var surface *testSurface
+			var surface *tuitest.Surface
 			if tt.size.X == 0 && tt.size.Y == 0 {
-				surface = newTestSurface(10, 5)
+				surface = tuitest.NewSurface(10, 5)
 			} else {
-				surface = newTestSurface(tt.size.X, tt.size.Y)
+				surface = tuitest.NewSurface(tt.size.X, tt.size.Y)
 			}
 
-			painter := NewPainter(surface, NewTheme())
+			painter := tui.NewPainter(surface, tui.NewTheme())
 			painter.Repaint(tt.setup())
 
 			if surface.String() != tt.want {
