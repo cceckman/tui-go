@@ -252,6 +252,15 @@ func TestWithStyle_Stacks(t *testing.T) {
 					}
 				})
 			})
+			// Then draw bottom-right, falling back to "explicit".
+			p.WithMask(image.Rect(1, 6, 4, 9), func(p *Painter) {
+				sz := p.surface.Size()
+				for x := 0; x < sz.X; x++ {
+					for y := 0; y < sz.Y; y++ {
+						p.DrawRune(x, y, ' ')
+					}
+				}
+			})
 		})
 
 		// Use global default for bottom-right.
@@ -272,9 +281,9 @@ func TestWithStyle_Stacks(t *testing.T) {
 .333......
 ..........
 ..........
-......000.
-......000.
-......000.
+.333..000.
+.333..000.
+.333..000.
 ..........
 `
 
