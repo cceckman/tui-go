@@ -72,3 +72,45 @@ func (s *Surface) String() string {
 	}
 	return buf.String()
 }
+
+// FgColors renders the testSurface's foreground colors, using the digit 0-7 for painted cells.
+func (s *Surface) FgColors() string {
+	var buf bytes.Buffer
+	buf.WriteRune('\n')
+	for j := 0; j < s.size.Y; j++ {
+		for i := 0; i < s.size.X; i++ {
+			if cell, ok := s.cells[image.Point{i, j}]; ok {
+				color := cell.Style.Fg
+				if cell.Style.Reverse {
+					color = cell.Style.Bg
+				}
+				buf.WriteRune('0' + rune(color))
+			} else {
+				buf.WriteRune(s.emptyCh)
+			}
+		}
+		buf.WriteRune('\n')
+	}
+	return buf.String()
+}
+
+// BgColors renders the testSurface's background colors, using the digit 0-7 for painted cells.
+func (s *Surface) BgColors() string {
+	var buf bytes.Buffer
+	buf.WriteRune('\n')
+	for j := 0; j < s.size.Y; j++ {
+		for i := 0; i < s.size.X; i++ {
+			if cell, ok := s.cells[image.Point{i, j}]; ok {
+				color := cell.Style.Bg
+				if cell.Style.Reverse {
+					color = cell.Style.Fg
+				}
+				buf.WriteRune('0' + rune(color))
+			} else {
+				buf.WriteRune(s.emptyCh)
+			}
+		}
+		buf.WriteRune('\n')
+	}
+	return buf.String()
+}
